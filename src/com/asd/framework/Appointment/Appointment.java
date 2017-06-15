@@ -3,22 +3,23 @@ package com.asd.framework.Appointment;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-import com.asd.framework.Participant.Participant;
 import com.asd.framework.Tool.Tool;
 
 public class Appointment {
+	Long Id;
 	AppointmentState state;
-	Participant appointer;
-	Participant appointee;
-	LinkedList<Participant> participants;
+	Integer appointerId;
+	Integer appointeeId;
+	LinkedList<Integer> participants;
 	LinkedList<Tool> tools;
 	LocalDateTime date;
 	LinkedList<Message> messages;
-	public Appointment(Participant appointer, Participant appointee, LocalDateTime date) {
-		this.appointer = appointer;
-		this.appointee = appointee;
+	public Appointment(Long Id, Integer appointerId, Integer appointeeId, LocalDateTime date) {
+		this.appointerId = appointerId;
+		this.appointeeId = appointeeId;
 		this.date = date;
 		this.state = AppointmentState.NEW;
+		this.Id = Id;
 	}
 	public void changeState(AppointmentState state) {
 		this.state = state;
@@ -26,10 +27,10 @@ public class Appointment {
 	public void changeDate(LocalDateTime date) {
 		this.date = date;
 	}
-	public void addParticipant(Participant participant) {
+	public void addParticipant(Integer participant) {
 		this.participants.add(participant);
 	}
-	public void removeParticipant(Participant participant) {
+	public void removeParticipant(Integer participant) {
 		this.participants.remove(participant);
 	}
 	public void addTool(Tool tool) {
@@ -44,16 +45,19 @@ public class Appointment {
 	public AppointmentState getState() {
 		return state;
 	}
-	public Participant getAppointer() {
-		return appointer;
+	public Long getId() {
+		return Id;
 	}
-	public Participant getAppointee() {
-		return appointee;
+	public Integer getAppointerId() {
+		return appointerId;
+	}
+	public Integer getAppointeeId() {
+		return appointeeId;
 	}
 	public LocalDateTime getDate() {
 		return date;
 	}
-	public LinkedList<Participant> getParticipants() {
+	public LinkedList<Integer> getParticipants() {
 		return participants;
 	}
 	public LinkedList<Tool> getTools() {
