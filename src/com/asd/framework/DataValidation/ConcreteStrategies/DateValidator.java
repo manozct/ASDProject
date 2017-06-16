@@ -17,9 +17,10 @@ public class DateValidator implements ValidatorStrategy {
             dateFormat.parse(value);
             return true;
         } catch (ParseException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return false;
         }
 
-        return false;
+       // return false;
     }
 }

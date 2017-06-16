@@ -9,11 +9,11 @@ import com.asd.framework.DatabaseConnection.DbConnection;
 import com.asd.framework.Participant.Participant;
 
 public class Calendar {
-	
+
 	private static Calendar instance = null;
 	private Map<Long,Appointment> appointments;
 	private DbConnection db;
-	
+
 	synchronized public static Calendar getInstance() {
 		if (instance == null)
 			instance = new Calendar();
@@ -24,12 +24,12 @@ public class Calendar {
 		db = new DbConnection();
 //		appointments = db.readAppointments();
 	}
-	
+
 	public HashMap<Integer,Participant> getAppointableParticipants() {
 //		return db.readAppointableParticipants();
 		return null;
 	}
-	
+
 	public long addAppointment(Integer appointerId, Integer appointeeId, LocalDateTime date) {
 		long Id = 0;
 		while (Id==0||appointments.get(Id)!=null)
@@ -39,11 +39,11 @@ public class Calendar {
 		appointments.put(Id, appointment);
 		return Id;
 	}
-	
+
 	public Appointment getAppointment(Long Id) {
 		return appointments.get(Id);
 	}
-	
+
 	public boolean removeAppointment(Long Id) {
 //		if (db.removeAppointment(Id)) {
 			appointments.remove(Id);
