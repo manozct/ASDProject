@@ -3,19 +3,25 @@ package Controller;
 import com.asd.framework.DataValidation.Context.ValidationContext;
 import com.asd.framework.DataValidation.ValidationConstraint;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-import javafx.event.ActionEvent;
-
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -24,32 +30,42 @@ import java.util.Map;
 public class MainApp extends Application {
     private Text actionText;
     @FXML
+    private Label lblOutput;
+    @FXML
     private TextField txtName;
     @FXML
-    private ComboBox<String> cmbCateory;
-    @FXML private javafx.scene.control.Label lblOutput;
-    @FXML private TextField txtMobile;
-    @FXML private TextField txtEmail;
-    @FXML private TextField txtHireDate;
-
-
-
+    private ComboBox<String> cmbCategory = new ComboBox<>();
+    @FXML
+    private TextField txtMobile;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private TextField txtHireDate;
+    @FXML
+    private RadioButton groupGender;
+    @FXML
+    private Button closeBtn;
+    @FXML
+    ListView<String> lstViewErrors = new ListView<>();
+    Scene scene2;
+    Stage popup = new Stage();
+    FlowPane pane2;
+    //private Popup popup=new Popup();
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../View/TestLayout.fxml"));
-
-        Scene scene = new Scene(root, 700, 575);
-        /*ObservableList<String> lst= FXCollections.observableArrayList("Cardiology","Radiology","Surgery");
-        cmbCateory.setItems(lst);*/
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/TestLayout.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 900, 600);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("style.css").toString());
         primaryStage.setTitle("Welcome");
-
+        pane2 = new FlowPane();
+        pane2.setVgap(10);
+        scene2 = new Scene(pane2, 200, 100);
+        popup.setScene(scene2);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
 
 
     }
@@ -58,35 +74,63 @@ public class MainApp extends Application {
     public void init() throws Exception {
         super.init();
 
-       // myBtn.addActionListener(new Button);
 
     }
+
     @FXML
-    public void ShowOutput(ActionEvent actionEvent){
-        //System.out.println("hello");
-        //String name= txtName.getText();
-        //System.out.println("name:"+name);
-       // lblOutput.setText(name);
+    public void initialize() {
+        cmbCategory.getItems().addAll("Cardiology", "Radiology", "Surgery ");
 
-        ValidationContext validationContext=new ValidationContext();
-        validationContext.addValidationConstraint(txtName,ValidationConstraint.REQUIRED);
-        validationContext.addValidationConstraint(txtMobile,ValidationConstraint.REQUIRED);
-        validationContext.addValidationConstraint(txtEmail,ValidationConstraint.REQUIRED);
-        validationContext.addValidationConstraint(cmbCateory,ValidationConstraint.REQUIRED);
-        validationContext.addValidationConstraint(txtHireDate,ValidationConstraint.REQUIRED);
-        //validationContext.addValidationConstraint(txtName,ValidationConstraint.NUMBER);
+    }
+
+    private Popup createPopup() {
+        final Popup popup = new Popup();
+        popup.setAutoHide(true);
+        popup.setX(300);
+        popup.setY(200);
+        popup.getContent().addAll(new Circle(25, 25, 50, Color.AQUAMARINE));
+        return popup;
+    }
 
 
-        Map<Boolean, List<String>> map=validationContext.checkValidate();
-        System.out.println(map);
-        for(Map.Entry<Boolean, List<String>> entry : map.entrySet()){
-            //String s=entry.getValue().get(0);
-            for(String s:entry.getValue()){
-                System.out.println(s);
+    @FXML
+    public void ShowOutput(ActionEvent actionEvent) {
 
-            }
+        ValidationContext validationContext = new ValidationContext();
+        validationContext.addValidationConstraint(txtName, Arrays.asList(ValidationConstraint.REQUIRED));
+        validationContext.addValidationConstraint(txtMobile, Arrays.asList(ValidationConstraint.REQUIRED, ValidationConstraint.NUMBER));
+        validationContext.addValidationConstraint(txtEmail, Arrays.asList(ValidationConstraint.REQUIRED, ValidationConstraint.EMAIL));
+        validationContext.addValidationConstraint(cmbCategory, Arrays.asList(ValidationConstraint.REQUIRED));
+        validationContext.addValidationConstraint(txtHireDate, Arrays.asList(ValidationConstraint.REQUIRED, ValidationConstraint.DATE));
+
+        /*if any validation error exist then only popup window show*/
+        validationContext.checkValidate();
+        System.out.println("isvalid:"+validationContext.isValid());
+        if(!validationContext.isValid()){
+            List<String> errors = validationContext.getErrors();
+            ObservableList<String> obErrors = FXCollections.observableArrayList(errors);
+            lstViewErrors.setItems(obErrors);
+
+            Scene scene3 = new Scene(new VBox(lstViewErrors));
+            popup.setScene(scene3);
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.setHeight(320);
+            popup.setWidth(430);
+            popup.setTitle("Validation Errors");
+            popup.showAndWait();
 
         }
+
+
+
+
+    }
+
+    @FXML
+    private void closeButtonAction(ActionEvent actionEvent) {
+
+        Stage stage = (Stage) closeBtn.getScene().getWindow();
+        stage.close();
 
 
     }
