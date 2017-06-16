@@ -1,6 +1,6 @@
 package com.asd.framework.Appointment;
 
-public enum AppointmentState {
+public enum AppointmentStatus {
 	NEW,
 	APPROVED,
 	CANCELLED

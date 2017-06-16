@@ -1,4 +1,4 @@
-package com.asd.framework.Utils;
+package com.asd.framework.Calendar;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,8 +41,8 @@ public class KeyList<T> implements Iterable<T> {
 		return data.replace(Id, item) != null;
 	}
 
-	public boolean remove(Long Id) {
-		return data.remove(Id) != null;
+	public T remove(Long Id) {
+		return data.remove(Id);
 	}
 
 	public boolean isEmpty() {
