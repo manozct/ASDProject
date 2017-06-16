@@ -12,20 +12,23 @@ public class Appointment {
 	Integer appointeeId;
 	LinkedList<Integer> participants;
 	LinkedList<Tool> tools;
-	LocalDateTime date;
+	LocalDateTime start;
+	LocalDateTime end;
 	LinkedList<Message> messages;
-	public Appointment(Long Id, Integer appointerId, Integer appointeeId, LocalDateTime date) {
+	public Appointment(Long Id, Integer appointerId, Integer appointeeId, LocalDateTime start, LocalDateTime end) {
 		this.appointerId = appointerId;
 		this.appointeeId = appointeeId;
-		this.date = date;
+		this.start = start;
+		this.end = end;
 		this.state = AppointmentState.NEW;
 		this.Id = Id;
 	}
 	public void changeState(AppointmentState state) {
 		this.state = state;
 	}
-	public void changeDate(LocalDateTime date) {
-		this.date = date;
+	public void changeDate(LocalDateTime start, LocalDateTime end) {
+		this.start = start;
+		this.end = end;
 	}
 	public void addParticipant(Integer participant) {
 		this.participants.add(participant);
@@ -54,8 +57,11 @@ public class Appointment {
 	public Integer getAppointeeId() {
 		return appointeeId;
 	}
-	public LocalDateTime getDate() {
-		return date;
+	public LocalDateTime getStartTime() {
+		return start;
+	}
+	public LocalDateTime getEndTime() {
+		return end;
 	}
 	public LinkedList<Integer> getParticipants() {
 		return participants;
