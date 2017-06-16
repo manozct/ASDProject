@@ -31,4 +31,21 @@ public class InputRetriever {
         }
         return null;
     }
+    public static String getControlId(Control control){
+        String controlId="";
+        if(control instanceof TextField){
+            return ((TextField) control).getId();
+        }
+
+        else if(control instanceof ComboBox){
+            return (String) ((ComboBox) control).getId();
+        }
+        else if(control instanceof RadioButton){
+           return (String)((RadioButton)control).getId();
+
+        }
+        return controlId;
+
+    }
+
 }

@@ -15,9 +15,9 @@ public class TimeValidator implements ValidatorStrategy {
         Pattern r=Pattern.compile(pattern);
         Matcher matcher=r.matcher(value);
         if(matcher.matches()){
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
