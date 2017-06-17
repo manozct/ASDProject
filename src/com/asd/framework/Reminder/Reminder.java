@@ -1,13 +1,13 @@
-package com.asd.framework.Participant;
+package com.asd.framework.Reminder;
 
 import java.time.LocalDateTime;
 
-public class Reminder {
+public abstract class Reminder {
 
-	Integer participantId;
-	String text;
-	LocalDateTime date;
-	ReminderStatus status;
+	private Integer participantId;
+	private String text;
+	private LocalDateTime date;
+	private ReminderStatus status;
 
 	public Reminder(Integer participantId, String text) {
 		this.participantId = participantId;
@@ -23,5 +23,7 @@ public class Reminder {
 	public LocalDateTime getDate() {
 		return date;
 	}
+	
+	public abstract void send();
 
 }
