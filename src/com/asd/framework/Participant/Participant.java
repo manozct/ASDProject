@@ -3,12 +3,16 @@ package com.asd.framework.Participant;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
+import com.asd.framework.Reminder.Reminder;
+
 public class Participant {
 
 	Long Id;
 	boolean appointable;
 	String name;
 	LocalDate birthdate;
+	Long lon;
+	Long lat;
 	
 	public Participant(String name, boolean appointable) {
 		this.name = name;
@@ -26,6 +30,19 @@ public class Participant {
 	
 	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
+	}
+	
+	public void setLocation(Long lon, Long lat) {
+		this.lon = lon;
+		this.lat = lat;
+	}
+	
+	public Long getLongitude() {
+		return lon;
+	}
+	
+	public Long getLatitude() {
+		return lat;
 	}
 	
 	public boolean isAppointable() {
