@@ -1,12 +1,13 @@
 package com.asd.framework.Calendar;
 
+import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import com.asd.framework.Appointment.Appointment;
 import com.asd.framework.Appointment.AppointmentStatus;
 import com.asd.framework.Appointment.WaitingAppointment;
-import com.asd.framework.DatabaseConnection.Db.DbConnection;
+import com.asd.framework.DatabaseConnection.Db.DbAccess;
 import com.asd.framework.Participant.Participant;
 import com.asd.framework.Reminder.Reminder;
 
@@ -15,7 +16,7 @@ public class Calendar {
 	private static Calendar instance = null;
 	private KeyList<Appointment> appointments;
 	private KeyList<WaitingAppointment> waitinglist;
-	private DbConnection db;
+//	private DbConnection db;
 	private int defaultDuration = 30;
 
 	synchronized public static Calendar getInstance() {
@@ -25,6 +26,10 @@ public class Calendar {
 	}
 
 	private Calendar() {
+		
+//		ResultSet rs=DbAccess.table("customer").
+//                .select("ID","name")
+//                .get();
 		// db = DbConnection.getCOnnection();
 		// appointments = db.readAppointments();
 		// read other config such as defaultDuration from DB too
@@ -36,7 +41,7 @@ public class Calendar {
 
 	public long addAppointment(Integer appointerId, Integer appointeeId, LocalDateTime start, LocalDateTime end) {
 		for (Appointment m : appointments) {
-			if (m.getAppointeeId() == appointeeId) {
+			if (m.getAppointeeId() == appointeeId && m.getStatus()!=AppointmentStatus.CANCELLED) {
 				LocalDateTime s = m.getStartTime();
 				LocalDateTime e = m.getEndTime();
 				if ((start.isAfter(s) && start.isBefore(e)) || (end.isAfter(s) && end.isBefore(e))) {
@@ -50,8 +55,10 @@ public class Calendar {
 		Appointment appointment = new Appointment(Id, appointerId, appointeeId, start, end);
 		// db.saveAppointment(appointment);
 		appointments.add(Id, appointment);
-		// addReminder(appointerId, "Your appointment is created, it will be approved soon");
-		// addReminder(appointeeId, "You have new appointment. Please, review and approve it.");
+		// Reminder reminder = new Reminder();
+		// reminder.setEmailDelivery(smtp, username, password);
+		// reminder.send(appointerId, "Your appointment is created, it will be approved soon");
+		// reminder.send(appointeeId, "You have new appointment. Please, review and approve it.");
 		return Id;
 	}
 
@@ -86,8 +93,7 @@ public class Calendar {
 		WaitingAppointment appointment = new WaitingAppointment(Id, appointerId, appointeeId, start, end);
 		// db.saveWaitingAppointment(appointment);
 		waitinglist.add(Id, appointment);
-		// addReminder(appointerId, "Your appointment is moved to waiting
-		// list!");
+		// addReminder(appointerId, "Your appointment is moved to waiting list!");
 		return Id;
 	}
 

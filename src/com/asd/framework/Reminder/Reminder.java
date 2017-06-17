@@ -1,29 +1,23 @@
 package com.asd.framework.Reminder;
 
-import java.time.LocalDateTime;
+public class Reminder {
 
-public abstract class Reminder {
+	private ReminderDefaultStrategy r;
 
-	private Integer participantId;
-	private String text;
-	private LocalDateTime date;
-	private ReminderStatus status;
-
-	public Reminder(Integer participantId, String text) {
-		this.participantId = participantId;
-		this.text = text;
-		this.date = LocalDateTime.now();
-		this.status = ReminderStatus.NEW;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public LocalDateTime getDate() {
-		return date;
+	public Reminder() {
+		r = new ReminderDefaultStrategy();
 	}
 	
-	public abstract void send();
+	public void setEmailDelivery(String smtp, String username, String password) {
+		r = new ReminderEmailStrategy(smtp, username, password);
+	}
+	
+	public void setSMSDelivery(String smsgateway, String username, String password) {
+		r = new ReminderSMSStrategy(smsgateway, username, password);
+	}
+	
+	public boolean send(Integer receiverId, String text) {
+		return r.send(receiverId, text);
+	}
 
 }
