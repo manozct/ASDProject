@@ -22,6 +22,8 @@ public class Test {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         System.out.println("Connection Successful");
 
         try {
@@ -30,9 +32,16 @@ public class Test {
             //ResultSet rs = DbAccess.table("customer")
                     //.select("id", "name").where("ID","1").orWhere("ID","10").get();
 
+//            ResultSet rs=DbAccess.table("customer")
+//                    .select("ID","name")
+//                    .get();
+//
+
             ResultSet rs=DbAccess.table("customer")
-                    .select("ID","name")
+                    .select("ID","Name")
+                    .where("ID", "1")
                     .get();
+
 
             while (rs.next()) {
                 System.out.println(rs.getString(1).toString());
@@ -45,6 +54,7 @@ public class Test {
 
             DbAccess.table("customer")
                     .values(valuess).insert();
+
 
 
 

@@ -1,6 +1,7 @@
 package com.asd.framework.Participant;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 
 public class Participant {
 
@@ -33,6 +34,12 @@ public class Participant {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public LinkedList<Reminder> getReminders() {
+//		DbConnection db = DbConnection.getCOnnection();
+//		return db.getReminders(this.Id, ReminderStatus.NEW);
+		return null;
 	}
 	
 }
