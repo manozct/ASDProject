@@ -1,6 +1,7 @@
 package com.asd.framework.Calendar;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
@@ -27,9 +28,15 @@ public class Calendar {
 
 	private Calendar() {
 		
-//		ResultSet rs=DbAccess.table("customer").
-//                .select("ID","name")
-//                .get();
+		try {
+			ResultSet rs=DbAccess.table("appointment").select("recordId").get();
+			while (rs.next()) {
+			    System.out.println(rs.getString(1).toString());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// db = DbConnection.getCOnnection();
 		// appointments = db.readAppointments();
 		// read other config such as defaultDuration from DB too
