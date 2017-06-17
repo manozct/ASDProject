@@ -11,12 +11,29 @@ import java.util.Properties;
 public class DbConnection {
     static DbConnection dbConnectionObj = null;
     public Connection connectionObj=null;
+
     private DbConnection(){
 
     }
-    public static DbConnection getCOnnection() {
+    public static DbConnection getCOnnection(DatabaseType databaseType,String host, int portNum,String database,
+                                             String userName,String password) throws Exception {
         if (dbConnectionObj == null) {
             dbConnectionObj = new DbConnection();
+            try {
+                if (databaseType.equals(DatabaseType.MySql)) {
+                    dbConnectionObj.connectionObj = dbConnectionObj.getMySqlConnection(host, portNum, database, userName, password);
+                } else if (databaseType.equals(DatabaseType.MsSQL)) {
+                    dbConnectionObj.connectionObj = dbConnectionObj.getMsSqlConnection(host, portNum, database, userName, password);
+                } else if (databaseType.equals(DatabaseType.PostgresSql)) {
+                    dbConnectionObj.connectionObj = dbConnectionObj.getPostGresConnection(host, portNum, database, userName, password);
+                } else if (databaseType.equals(DatabaseType.ORACLE)) {
+                    dbConnectionObj.connectionObj = dbConnectionObj.getOracleConnection(host, portNum, database, userName, password);
+                }
+           //     return connectionObj;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
         return dbConnectionObj;
     }

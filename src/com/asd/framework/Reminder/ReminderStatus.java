@@ -1,4 +1,4 @@
-package com.asd.framework.Participant;
+package com.asd.framework.Reminder;
 
 public enum ReminderStatus {
 	
