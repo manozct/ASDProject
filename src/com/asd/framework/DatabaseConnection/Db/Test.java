@@ -13,10 +13,18 @@ public class Test {
 
     public static void main(String[] args) {
 
+<<<<<<< HEAD
         /*try {
             DbConnection.getCOnnection();
             Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
                     3306, "mts", "root", "1234");
+=======
+        try {
+            DbConnection.getCOnnection(DatabaseType.MySql, "localhost",
+                  3306, "mts", "root", "1234");
+//            Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
+//                    3306, "mts", "root", "1234");
+>>>>>>> ebcca62232b417c22b5eda4b141a97c9752c2fe5
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -46,6 +54,10 @@ public class Test {
             DbAccess.table("customer")
                     .values(valuess).insert();
 
+            DbAccess.table("customer")
+                    .set(valuess)
+                    .where("ID", "1")
+                    .update();
 
 
         } catch (Exception e) {
