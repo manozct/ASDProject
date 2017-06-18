@@ -9,8 +9,8 @@ import java.util.Properties;
  * Created by eessca on 6/12/2017.
  */
 public class DbConnection {
-    static DbConnection dbConnectionObj = null;
-    static Connection connectionObj=null;
+    public static DbConnection dbConnectionObj = null;
+    public static Connection connectionObj=null;
     private DbConnection(){
 
     }

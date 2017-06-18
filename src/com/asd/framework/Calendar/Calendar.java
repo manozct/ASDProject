@@ -1,12 +1,13 @@
+/*
 package com.asd.framework.Calendar;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.asd.framework.Appointment.Appointment;
 import com.asd.framework.DatabaseConnection.DbConnection;
 import com.asd.framework.Participant.Participant;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Calendar {
 	
@@ -52,3 +53,4 @@ public class Calendar {
 	}
 
 }
+*/

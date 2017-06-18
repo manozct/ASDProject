@@ -13,7 +13,7 @@ public class Test {
 
     public static void main(String[] args) {
 
-        try {
+        /*try {
             DbConnection.getCOnnection();
             Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
                     3306, "mts", "root", "1234");
@@ -21,7 +21,7 @@ public class Test {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         System.out.println("Connection Successful");
 
         try {
