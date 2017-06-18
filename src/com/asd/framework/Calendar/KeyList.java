@@ -2,20 +2,22 @@ package com.asd.framework.Calendar;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class KeyList<T> implements Iterable<T> {
 
 	HashMap<Long, T> data;
+	Iterator<Map.Entry<Long, T>> iterator;
 
 	private class KeyIterator implements Iterator<T> {
 		@Override
 		public boolean hasNext() {
-			return data.entrySet().iterator().hasNext();
+			return iterator.hasNext();
 		}
 
 		@Override
 		public T next() {
-			return data.entrySet().iterator().next().getValue();
+			return iterator.next().getValue();
 		}
 	}
 
@@ -25,6 +27,7 @@ public class KeyList<T> implements Iterable<T> {
 
 	@Override
 	public Iterator<T> iterator() {
+		iterator = data.entrySet().iterator();
 		return new KeyIterator();
 	}
 
