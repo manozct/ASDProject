@@ -1,9 +1,11 @@
 package com.asd.framework.Calendar;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.asd.framework.Appointment.Appointment;
 import com.asd.framework.Appointment.AppointmentStatus;
@@ -17,7 +19,6 @@ public class Calendar {
 	private static Calendar instance = null;
 	private KeyList<Appointment> appointments;
 	private KeyList<WaitingAppointment> waitinglist;
-//	private DbConnection db;
 	private int defaultDuration = 30;
 
 	synchronized public static Calendar getInstance() {
@@ -28,18 +29,8 @@ public class Calendar {
 
 	private Calendar() {
 		
-		try {
-			ResultSet rs=DbAccess.table("appointment").select("recordId").get();
-			while (rs.next()) {
-			    System.out.println(rs.getString(1).toString());
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// db = DbConnection.getCOnnection();
-		// appointments = db.readAppointments();
-		// read other config such as defaultDuration from DB too
+		readAppointmentsFromDB();
+
 	}
 
 	public long addAppointment(Integer appointerId, Integer appointeeId, LocalDateTime start) {
@@ -47,11 +38,13 @@ public class Calendar {
 	}
 
 	public long addAppointment(Integer appointerId, Integer appointeeId, LocalDateTime start, LocalDateTime end) {
+		Long sn = start.toEpochSecond(ZoneOffset.UTC);
+		Long en = end.toEpochSecond(ZoneOffset.UTC);
 		for (Appointment m : appointments) {
-			if (m.getAppointeeId() == appointeeId && m.getStatus()!=AppointmentStatus.CANCELLED) {
-				LocalDateTime s = m.getStartTime();
-				LocalDateTime e = m.getEndTime();
-				if ((start.isAfter(s) && start.isBefore(e)) || (end.isAfter(s) && end.isBefore(e))) {
+			if ((m.getAppointeeId() == appointeeId) && (m.getStatus() != AppointmentStatus.CANCELLED)) {
+				Long s = m.getStartTime().toEpochSecond(ZoneOffset.UTC);
+				Long e = m.getEndTime().toEpochSecond(ZoneOffset.UTC);
+				if ((sn>=s && sn<=e) || (en>=s && en<=e)) {
 					return 0;
 				}
 			}
@@ -60,12 +53,14 @@ public class Calendar {
 		while (Id == 0 || appointments.get(Id) != null)
 			Id = Math.round(Math.random() * 1000000);
 		Appointment appointment = new Appointment(Id, appointerId, appointeeId, start, end);
-		// db.saveAppointment(appointment);
+		saveAppointmentToDB(appointment);
 		appointments.add(Id, appointment);
 		// Reminder reminder = new Reminder();
 		// reminder.setEmailDelivery(smtp, username, password);
-		// reminder.send(appointerId, "Your appointment is created, it will be approved soon");
-		// reminder.send(appointeeId, "You have new appointment. Please, review and approve it.");
+		// reminder.send(appointerId, "Your appointment is created, it will be
+		// approved soon");
+		// reminder.send(appointeeId, "You have new appointment. Please, review
+		// and approve it.");
 		return Id;
 	}
 
@@ -76,7 +71,8 @@ public class Calendar {
 	public boolean approveAppointment(Long Id) {
 		Appointment appointment = appointments.get(Id);
 		appointment.changeState(AppointmentStatus.APPROVED);
-		// addReminder(appointment.getAppointerId(), "Your appointment is approved");
+		// addReminder(appointment.getAppointerId(), "Your appointment is
+		// approved");
 		// return (db.saveAppointment(Id, appointment));
 		return true;
 	}
@@ -84,7 +80,8 @@ public class Calendar {
 	public boolean cancelAppointment(Long Id) {
 		Appointment appointment = appointments.remove(Id);
 		appointment.changeState(AppointmentStatus.CANCELLED);
-		// addReminder(appointment.getAppointerId(), "Your appointment is cancelled");
+		// addReminder(appointment.getAppointerId(), "Your appointment is
+		// cancelled");
 		// if (db.saveAppointment(Id, appointment)) {
 		for (WaitingAppointment wa : waitinglist)
 			wa.update(this, appointment);
@@ -100,7 +97,8 @@ public class Calendar {
 		WaitingAppointment appointment = new WaitingAppointment(Id, appointerId, appointeeId, start, end);
 		// db.saveWaitingAppointment(appointment);
 		waitinglist.add(Id, appointment);
-		// addReminder(appointerId, "Your appointment is moved to waiting list!");
+		// addReminder(appointerId, "Your appointment is moved to waiting
+		// list!");
 		return Id;
 	}
 
@@ -122,7 +120,41 @@ public class Calendar {
 	}
 
 	public void addReminder(Reminder reminder) {
-//		reminder.send(db);
+		// reminder.send(db);
 	}
+	
+	public void readAppointmentsFromDB() {
+		appointments = new KeyList<>();
+		try {
+			ResultSet rs = DbAccess.table("appointments").select("recordId","status","appointer","appointee","start","end").get();
+			while (rs.next()) {
+				Long Id = rs.getLong(1);
+				AppointmentStatus status = AppointmentStatus.valueOf(rs.getString(2)); 
+				Appointment a = new Appointment(Id,rs.getInt(3),rs.getInt(4),
+						LocalDateTime.ofEpochSecond(rs.getLong(5), 0, ZoneOffset.UTC),
+						LocalDateTime.ofEpochSecond(rs.getLong(6), 0, ZoneOffset.UTC));
+				a.changeState(status);
+				appointments.add(Id, a);
+			}
+		} catch (Exception e) {
+			System.out.println("Can not connect to database, please check your credentials!");
+		}
+	}
+	
+	public void saveAppointmentToDB(Appointment appointment) {
+		try {
+            Map<String,String> values=new HashMap<>();
+            values.put("recordId", appointment.getId().toString());
+            values.put("status", appointment.getStatus().name());
+            values.put("appointer", appointment.getAppointerId().toString());
+            values.put("appointee", appointment.getAppointeeId().toString());
+            values.put("start", String.valueOf(appointment.getStartTime().toEpochSecond(ZoneOffset.UTC)));
+            values.put("end", String.valueOf(appointment.getEndTime().toEpochSecond(ZoneOffset.UTC)));
+			DbAccess.table("appointments").values(values).insert();
+		} catch (Exception e) {
+			System.out.println("Can not connect to database, please check your credentials!");
+		}
+	};
+
 
 }

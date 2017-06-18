@@ -10,12 +10,7 @@ import java.util.Properties;
  */
 public class DbConnection {
     static DbConnection dbConnectionObj = null;
-<<<<<<< HEAD
-    public Connection connectionObj=null;
-
-=======
     static Connection connectionObj=null;
->>>>>>> 5ec08af7b0ae3eaed1074c18756c1d222c2d4338
     private DbConnection(){
 
     }

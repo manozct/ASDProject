@@ -2,6 +2,8 @@ package com.asd.framework.Appointment;
 
 import java.time.LocalDateTime;
 
+import com.asd.framework.Calendar.Calendar;
+
 public class WaitingAppointment {
 
 	private Long Id;

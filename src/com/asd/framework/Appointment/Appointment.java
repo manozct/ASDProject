@@ -8,7 +8,6 @@ public class Appointment {
 	private AppointmentStatus status;
 	private Integer appointerId;
 	private Integer appointeeId;
-	private LinkedList<Integer> participants;
 	private LocalDateTime start;
 	private LocalDateTime end;
 	private LinkedList<AppointmentMessage> messages;
@@ -29,14 +28,6 @@ public class Appointment {
 	public void changeDate(LocalDateTime start, LocalDateTime end) {
 		this.start = start;
 		this.end = end;
-	}
-
-	public void addParticipant(Integer participant) {
-		this.participants.add(participant);
-	}
-
-	public void removeParticipant(Integer participant) {
-		this.participants.remove(participant);
 	}
 
 	public void newMessage(AppointmentMessage message) {
@@ -65,10 +56,6 @@ public class Appointment {
 
 	public LocalDateTime getEndTime() {
 		return end;
-	}
-
-	public LinkedList<Integer> getParticipants() {
-		return participants;
 	}
 
 	public LinkedList<AppointmentMessage> getMessages() {
