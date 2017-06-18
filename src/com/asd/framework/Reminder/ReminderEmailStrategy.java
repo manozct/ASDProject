@@ -14,14 +14,8 @@ public class ReminderEmailStrategy extends ReminderDefaultStrategy {
 	}
 
 	@Override
-	public boolean send(Integer receiverId, String text) {
-		//Send email using Sendgrid
-		// try {
-		// URL conn = new URL("https://api.sendgrid.com/api/mail.send.json");
-		// conn.
-		// } catch (MalformedURLException e) {
-		// return false;
-		// }
+	public boolean send(Long receiverId, String text) {
+		//Connect to smtp server
 		return true;
 	}
 

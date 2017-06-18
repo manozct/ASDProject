@@ -1,26 +1,22 @@
-package com.asd.framework.Participant;
+package com.asd.framework.Person;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 
+import com.asd.framework.Appointment.Appointment;
+import com.asd.framework.Calendar.KeyList;
 import com.asd.framework.Reminder.Reminder;
 
-public class Participant {
+public class Person {
 
 	Long Id;
-	boolean appointable;
 	String name;
 	LocalDate birthdate;
 	Long lon;
 	Long lat;
 	
-	public Participant(String name, boolean appointable) {
+	public Person(Long Id, String name) {
 		this.name = name;
-		this.appointable = appointable;
-		long Id = 0;
-//		DbConnection db = new DbConnection();
-//		while (Id==0||db.getParticipant(Id)!=null)
-//			Id = Math.round(Math.random()*1000000);
 		this.Id = Id;
 	}
 	
@@ -45,17 +41,21 @@ public class Participant {
 		return lat;
 	}
 	
-	public boolean isAppointable() {
-		return appointable;
-	}
-	
 	public String getName() {
 		return name;
+	}
+	
+	public Long getId() {
+		return Id;
 	}
 	
 	public LinkedList<Reminder> getReminders() {
 //		DbConnection db = DbConnection.getCOnnection();
 //		return db.getReminders(this.Id, ReminderStatus.NEW);
+		return null;
+	}
+	
+	public KeyList<Appointment> getAppointments() {
 		return null;
 	}
 	

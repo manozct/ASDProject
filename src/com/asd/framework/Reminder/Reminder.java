@@ -16,7 +16,7 @@ public class Reminder {
 		r = new ReminderSMSStrategy(smsgateway, username, password);
 	}
 	
-	public boolean send(Integer receiverId, String text) {
+	public boolean send(Long receiverId, String text) {
 		return r.send(receiverId, text);
 	}
 
