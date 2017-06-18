@@ -2,14 +2,14 @@ package com.asd.framework.Appointment;
 
 import java.time.LocalDateTime;
 
-import com.asd.framework.Participant.Participant;
+import com.asd.framework.Person.Person;
 
 public class AppointmentMessage {
 	String text;
-	Participant author;
+	Person author;
 	LocalDateTime date;
 
-	public AppointmentMessage(String text, Participant author) {
+	public AppointmentMessage(String text, Person author) {
 		this.text = text;
 		this.author = author;
 		this.date = LocalDateTime.now();
@@ -19,7 +19,7 @@ public class AppointmentMessage {
 		return text;
 	}
 
-	public Participant getAuthor() {
+	public Person getAuthor() {
 		return author;
 	}
 

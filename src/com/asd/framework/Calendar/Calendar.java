@@ -1,18 +1,17 @@
 package com.asd.framework.Calendar;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import com.asd.framework.Appointment.Appointment;
 import com.asd.framework.Appointment.AppointmentStatus;
 import com.asd.framework.Appointment.WaitingAppointment;
 import com.asd.framework.DatabaseConnection.Db.DbAccess;
-import com.asd.framework.Participant.Participant;
-import com.asd.framework.Reminder.Reminder;
+import com.asd.framework.Person.Person;
 
 public class Calendar {
 
@@ -28,16 +27,23 @@ public class Calendar {
 	}
 
 	private Calendar() {
-		
 		readAppointmentsFromDB();
-
+		readWaitingListFromDB();
 	}
 
-	public long addAppointment(Integer appointerId, Integer appointeeId, LocalDateTime start) {
+	public KeyList<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public Appointment getAppointment(Long Id) {
+		return appointments.get(Id);
+	}
+
+	public Appointment addAppointment(Long appointerId, Long appointeeId, LocalDateTime start) {
 		return addAppointment(appointerId, appointeeId, start, start.plusMinutes(defaultDuration));
 	}
 
-	public long addAppointment(Integer appointerId, Integer appointeeId, LocalDateTime start, LocalDateTime end) {
+	public Appointment addAppointment(Long appointerId, Long appointeeId, LocalDateTime start, LocalDateTime end) {
 		Long sn = start.toEpochSecond(ZoneOffset.UTC);
 		Long en = end.toEpochSecond(ZoneOffset.UTC);
 		for (Appointment m : appointments) {
@@ -45,7 +51,7 @@ public class Calendar {
 				Long s = m.getStartTime().toEpochSecond(ZoneOffset.UTC);
 				Long e = m.getEndTime().toEpochSecond(ZoneOffset.UTC);
 				if ((sn>=s && sn<=e) || (en>=s && en<=e)) {
-					return 0;
+					return null;
 				}
 			}
 		}
@@ -53,74 +59,60 @@ public class Calendar {
 		while (Id == 0 || appointments.get(Id) != null)
 			Id = Math.round(Math.random() * 1000000);
 		Appointment appointment = new Appointment(Id, appointerId, appointeeId, start, end);
-		saveAppointmentToDB(appointment);
-		appointments.add(Id, appointment);
-		// Reminder reminder = new Reminder();
-		// reminder.setEmailDelivery(smtp, username, password);
-		// reminder.send(appointerId, "Your appointment is created, it will be
-		// approved soon");
-		// reminder.send(appointeeId, "You have new appointment. Please, review
-		// and approve it.");
-		return Id;
+		if (saveAppointmentToDB(appointment)) {
+			appointments.add(Id, appointment);
+			return appointment;
+		} else {
+			return null;
+		}
 	}
 
-	public Appointment getAppointment(Long Id) {
-		return appointments.get(Id);
+	public boolean approveAppointment(Appointment appointment) {
+		appointment.changeStatus(AppointmentStatus.APPROVED);
+		if (saveAppointmentStatusToDB(appointment)) {
+			return true;
+		} else {
+			appointment.changeStatus(AppointmentStatus.NEW);
+			return false;
+		}
 	}
 
-	public boolean approveAppointment(Long Id) {
-		Appointment appointment = appointments.get(Id);
-		appointment.changeState(AppointmentStatus.APPROVED);
-		// addReminder(appointment.getAppointerId(), "Your appointment is
-		// approved");
-		// return (db.saveAppointment(Id, appointment));
-		return true;
+	public boolean cancelAppointment(Appointment appointment) {
+		appointment.changeStatus(AppointmentStatus.CANCELLED);
+		if (saveAppointmentStatusToDB(appointment)) {
+			for (WaitingAppointment wa : waitinglist)
+				wa.update(this, appointment);
+			return true;
+		} else {
+			appointment.changeStatus(AppointmentStatus.NEW);
+			return false;
+		}
 	}
 
-	public boolean cancelAppointment(Long Id) {
-		Appointment appointment = appointments.remove(Id);
-		appointment.changeState(AppointmentStatus.CANCELLED);
-		// addReminder(appointment.getAppointerId(), "Your appointment is
-		// cancelled");
-		// if (db.saveAppointment(Id, appointment)) {
-		for (WaitingAppointment wa : waitinglist)
-			wa.update(this, appointment);
-		return true;
-		// } else return false;
+	public KeyList<WaitingAppointment> getWaitingList() {
+		return waitinglist;
 	}
 
-	public long addWaitingAppointment(Integer appointerId, Integer appointeeId, LocalDateTime start,
-			LocalDateTime end) {
+	public WaitingAppointment addWaitingAppointment(Long appointerId, Long appointeeId, LocalDateTime start, LocalDateTime end) {
 		long Id = 0;
 		while (Id == 0 || waitinglist.get(Id) != null)
 			Id = Math.round(Math.random() * 1000000);
 		WaitingAppointment appointment = new WaitingAppointment(Id, appointerId, appointeeId, start, end);
-		// db.saveWaitingAppointment(appointment);
-		waitinglist.add(Id, appointment);
-		// addReminder(appointerId, "Your appointment is moved to waiting
-		// list!");
-		return Id;
+		if (saveWaitingAppointmentToDB(appointment)) {
+			waitinglist.add(Id, appointment);
+			return appointment;
+		} else {
+			return null;
+		}
 	}
 
 	public boolean removeWaitingAppointment(Long Id) {
-		// if (db.removeWaitingAppointment(Id)) {
-		waitinglist.remove(Id);
-		return true;
-		// } else return false;
-	}
-
-	public LinkedList<Participant> getAppointableParticipants() {
-		// return db.readParticipants(ParticipantStatus.APPOINTABLE);
-		return null;
-	}
-
-	public LinkedList<Participant> getParticipants() {
-		// return db.readParticipants(ParticipantStatus.NORMAL);
-		return null;
-	}
-
-	public void addReminder(Reminder reminder) {
-		// reminder.send(db);
+		if (removeWaitingAppointmentFromDB(Id)) {
+			waitinglist.remove(Id);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void readAppointmentsFromDB() {
@@ -130,10 +122,10 @@ public class Calendar {
 			while (rs.next()) {
 				Long Id = rs.getLong(1);
 				AppointmentStatus status = AppointmentStatus.valueOf(rs.getString(2)); 
-				Appointment a = new Appointment(Id,rs.getInt(3),rs.getInt(4),
+				Appointment a = new Appointment(Id,rs.getLong(3),rs.getLong(4),
 						LocalDateTime.ofEpochSecond(rs.getLong(5), 0, ZoneOffset.UTC),
 						LocalDateTime.ofEpochSecond(rs.getLong(6), 0, ZoneOffset.UTC));
-				a.changeState(status);
+				a.changeStatus(status);
 				appointments.add(Id, a);
 			}
 		} catch (Exception e) {
@@ -141,7 +133,7 @@ public class Calendar {
 		}
 	}
 	
-	public void saveAppointmentToDB(Appointment appointment) {
+	public boolean saveAppointmentToDB(Appointment appointment) {
 		try {
             Map<String,String> values=new HashMap<>();
             values.put("recordId", appointment.getId().toString());
@@ -151,10 +143,82 @@ public class Calendar {
             values.put("start", String.valueOf(appointment.getStartTime().toEpochSecond(ZoneOffset.UTC)));
             values.put("end", String.valueOf(appointment.getEndTime().toEpochSecond(ZoneOffset.UTC)));
 			DbAccess.table("appointments").values(values).insert();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Can not connect to database, please check your credentials!");
+			return false;
+		}
+	};
+	
+	public boolean saveAppointmentStatusToDB(Appointment appointment) {
+		try {
+            Map<String,String> values=new HashMap<>();
+            values.put("status", appointment.getStatus().name());
+			DbAccess.table("appointments").set(values).where("recordId",appointment.getId().toString()).update();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Can not connect to database, please check your credentials!");
+			return false;
+		}
+	};
+	
+	public void readWaitingListFromDB() {
+		waitinglist = new KeyList<>();
+		try {
+			ResultSet rs = DbAccess.table("waitinglist").select("recordId","appointer","appointee","start","end").get();
+			while (rs.next()) {
+				Long Id = rs.getLong(1);
+				WaitingAppointment a = new WaitingAppointment(Id,rs.getLong(2),rs.getLong(3),
+						LocalDateTime.ofEpochSecond(rs.getLong(3), 0, ZoneOffset.UTC),
+						LocalDateTime.ofEpochSecond(rs.getLong(4), 0, ZoneOffset.UTC));
+				waitinglist.add(Id,a);
+			}
 		} catch (Exception e) {
 			System.out.println("Can not connect to database, please check your credentials!");
 		}
-	};
+	}
+	
+	public boolean saveWaitingAppointmentToDB(WaitingAppointment wa) {
+		try {
+            Map<String,String> values=new HashMap<>();
+            values.put("recordId", wa.getId().toString());
+            values.put("appointer", wa.getAppointerId().toString());
+            values.put("appointee", wa.getAppointeeId().toString());
+            values.put("start", String.valueOf(wa.getStartTime().toEpochSecond(ZoneOffset.UTC)));
+            values.put("end", String.valueOf(wa.getEndTime().toEpochSecond(ZoneOffset.UTC)));
+			DbAccess.table("waitinglist").values(values).insert();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Can not connect to database, please check your credentials!");
+			return false;
+		}
+	}
+	
+	public boolean removeWaitingAppointmentFromDB(Long Id) {
+		try {
+			DbAccess.table("waitinglist").where("recordId",Id.toString()).delete();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Can not connect to database, please check your credentials!");
+			return false;
+		}
+	}
 
+	public KeyList<Person> getStaffList() {
+		KeyList<Person> staff_list = new KeyList<>();
+		try {
+			ResultSet rs = DbAccess.table("users").select("recordId","name","birthdate","lon","lat").where("staff","Y").get();
+			while (rs.next()) {
+				Long Id = rs.getLong(1);
+				Person p = new Person(Id,rs.getString(2));
+				p.setBirthdate(LocalDate.ofEpochDay(rs.getLong(3)));
+				p.setLocation(rs.getLong(4), rs.getLong(5));
+				staff_list.add(Id, p);
+			}
+		} catch (Exception e) {
+			System.out.println("Can not connect to database!");
+		}
+		return staff_list;
+	}
 
 }
