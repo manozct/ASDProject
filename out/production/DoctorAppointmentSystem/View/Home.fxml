@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="453.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Home">
+   <children>
+      <Label layoutX="64.0" layoutY="57.0" prefHeight="91.0" prefWidth="490.0" text="Doctor Appointment System" textFill="#5d5b6b">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Button id="btnAdminLogin" fx:id="btnAdminLogin" layoutX="57.0" layoutY="185.0" mnemonicParsing="false" onAction="#btnAdminLoginAction" prefHeight="69.0" prefWidth="173.0" text="Admin Login" textFill="#252124db">
+         <effect>
+            <Glow />
+         </effect>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Button id="btnPatientLogin" fx:id="btnPatientLogin" layoutX="255.0" layoutY="185.0" mnemonicParsing="false" onAction="#btnPatientLoginAction" prefHeight="69.0" prefWidth="173.0" text="Patient Login">
+         <effect>
+            <Glow />
+         </effect>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Button id="btnDoctorLogin" fx:id="btnDoctorLogin" layoutX="446.0" layoutY="185.0" mnemonicParsing="false" onAction="#btnDoctorLoginAction" prefHeight="69.0" prefWidth="173.0" text="Doctor Login">
+         <effect>
+            <Glow />
+         </effect>
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

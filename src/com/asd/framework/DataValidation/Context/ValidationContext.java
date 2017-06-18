@@ -62,7 +62,7 @@ public class ValidationContext {
             for (ValidationConstraint constraint : validationConstraint) {
 
                 String value = InputRetriever.retrieveText(control);
-                System.out.println("CheckValidate method:"+isValid);
+               // System.out.println("CheckValidate method:"+isValid);
 
 
                 if (!getValidator(constraint).validate(value)) {
@@ -140,7 +140,7 @@ public class ValidationContext {
     }
 
     public boolean isValid() {
-        System.out.println("map keyset:"+map.keySet());
+        //System.out.println("map keyset:"+map.keySet());
         return (boolean) map.keySet().toArray()[0];
     }
 }

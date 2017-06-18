@@ -2,6 +2,9 @@ package Controller;
 
 import com.asd.framework.DataValidation.Context.ValidationContext;
 import com.asd.framework.DataValidation.ValidationConstraint;
+import com.asd.framework.DatabaseConnection.Db.DatabaseType;
+import com.asd.framework.DatabaseConnection.Db.DbAccess;
+import com.asd.framework.DatabaseConnection.Db.DbConnection;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,14 +23,18 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * Created by manozct on 6/13/2017.
  */
-public class MainApp extends Application {
+public class AddDoctor extends Application {
     private Text actionText;
     @FXML
     private Label lblOutput;
@@ -41,8 +48,9 @@ public class MainApp extends Application {
     private TextField txtEmail;
     @FXML
     private TextField txtHireDate;
-    @FXML
-    private RadioButton groupGender;
+
+    @FXML private RadioButton rdbMale;
+    @FXML private RadioButton rdbFeamle;
     @FXML
     private Button closeBtn;
     @FXML
@@ -64,6 +72,7 @@ public class MainApp extends Application {
         pane2.setVgap(10);
         scene2 = new Scene(pane2, 200, 100);
         popup.setScene(scene2);
+
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -73,6 +82,7 @@ public class MainApp extends Application {
     @Override
     public void init() throws Exception {
         super.init();
+        getConnection();
 
 
     }
@@ -94,7 +104,7 @@ public class MainApp extends Application {
 
 
     @FXML
-    public void ShowOutput(ActionEvent actionEvent) {
+    public void submitBtnAction(ActionEvent actionEvent) {
 
         ValidationContext validationContext = new ValidationContext();
         validationContext.addValidationConstraint(txtName, Arrays.asList(ValidationConstraint.REQUIRED));
@@ -105,7 +115,8 @@ public class MainApp extends Application {
 
         /*if any validation error exist then only popup window show*/
         validationContext.checkValidate();
-        System.out.println("isvalid:"+validationContext.isValid());
+       // System.out.println("isvalid:"+validationContext.isValid());
+
         if(!validationContext.isValid()){
             List<String> errors = validationContext.getErrors();
             ObservableList<String> obErrors = FXCollections.observableArrayList(errors);
@@ -120,6 +131,54 @@ public class MainApp extends Application {
             popup.showAndWait();
 
         }
+        if(validationContext.isValid()){
+
+            try {
+
+                //ResultSet rs = DbAccess.table("doctor").get();
+               // System.out.println(rs.getString(1).toString());
+                //ResultSet rs = DbAccess.table("customer")
+                //.select("id", "name").where("ID","1").orWhere("ID","10").get();
+
+                /*ResultSet rs= DbAccess.table("customer")
+                        .select("ID","name")
+                        .get();
+
+                while (rs.next()) {
+                    System.out.println(rs.getString(1).toString());
+                }*/
+
+
+                Map<String,String> valuess=new HashMap<>();
+                 String gender="";
+                 if(rdbMale.isSelected()){
+                     gender="Male";
+                 }
+                 else{
+                     gender="Female";
+                 }
+                System.out.println(gender);
+
+                valuess.put("Name", txtName.getText());
+                valuess.put("Mobile", txtMobile.getText());
+                valuess.put("Email", txtEmail.getText());
+                valuess.put("Category", cmbCategory.getSelectionModel().getSelectedItem());
+                valuess.put("Gender",gender);
+                valuess.put("HireDate",txtHireDate.getText());
+
+                DbAccess.table("doctor")
+                        .values(valuess).insert();
+                Alert alert=new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setContentText("Data saved sucessfully..");
+                alert.showAndWait();
+
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
 
 
@@ -132,6 +191,18 @@ public class MainApp extends Application {
         Stage stage = (Stage) closeBtn.getScene().getWindow();
         stage.close();
 
+
+    }
+    public void getConnection(){
+        try {
+            DbConnection.getCOnnection();
+            Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
+                    3306, "appointmentsystem", "root", "root");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
