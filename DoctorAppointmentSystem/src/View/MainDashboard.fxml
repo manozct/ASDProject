@@ -8,24 +8,24 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.DashBoard">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar id="MainMenu" fx:id="MainMenu" BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" fx:id="appointmentId" text="My Appointment">
+          <Menu fx:id="appointmentId" mnemonicParsing="false" text="My Appointment">
             <items>
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" fx:id="customerListId" text="View Customer">
+          <Menu fx:id="customerListId" mnemonicParsing="false" text="View Customer">
             <items>
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" id="doctorProfileId" text="Profile">
+          <Menu id="doctorProfileId" mnemonicParsing="false" text="Profile">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" fx:id="doctorAddId" text="Add Doctor">
+            <Menu fx:id="doctorAddId" mnemonicParsing="false" text="Add Doctor">
                 <items>
                     <MenuItem mnemonicParsing="false" text="About" />
                 </items>

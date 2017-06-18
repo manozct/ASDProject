@@ -6,8 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,7 @@ public class DashBoard extends Application {
     @FXML Menu appointmentId;
     @FXML Menu customerListId;
     @FXML Menu doctorProfileId;
+    @FXML MenuBar MainMenu;
 
     private HashMap<String,List<Menu>>hMapControlByRole=new HashMap<>();
 
@@ -33,10 +36,18 @@ public class DashBoard extends Application {
         Scene scene = new Scene(root, 900, 600);
         primaryStage.setTitle("Doctor Appointment System");
         primaryStage.setScene(scene);
+
+        //designMainMenu();
+
         primaryStage.show();
 
 
     }
+
+
+
+
+
     public void authorizationOperation(){
         List<Menu> lstControlId= Arrays.asList(viewId,doctorAddId,appointmentId,customerListId,doctorProfileId);
     }
