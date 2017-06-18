@@ -1,8 +1,5 @@
-/*
 package com.asd.framework.Calendar;
 
-<<<<<<< HEAD
-=======
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,16 +7,11 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
->>>>>>> ebcca62232b417c22b5eda4b141a97c9752c2fe5
 import com.asd.framework.Appointment.Appointment;
 import com.asd.framework.Appointment.AppointmentStatus;
 import com.asd.framework.Appointment.WaitingAppointment;
 import com.asd.framework.DatabaseConnection.Db.DbAccess;
 import com.asd.framework.Person.Person;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Calendar {
 
@@ -230,4 +222,3 @@ public class Calendar {
 	}
 
 }
-*/
