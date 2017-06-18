@@ -34,8 +34,8 @@ public class DbAccess {
 
         public ResultSet rawQuery(String query) {
             try {
-               // PreparedStatement preparedStatement = DbConnection.connectionObj.prepareStatement(query);
                 PreparedStatement preparedStatement = DbConnection.dbConnectionObj.connectionObj.prepareStatement(query);
+
                 return preparedStatement.executeQuery();
 
             } catch (SQLException e) {

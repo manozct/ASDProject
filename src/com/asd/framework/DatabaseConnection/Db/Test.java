@@ -23,8 +23,6 @@ public class Test {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         System.out.println("Connection Successful");
 
         try {
@@ -33,16 +31,9 @@ public class Test {
             //ResultSet rs = DbAccess.table("customer")
                     //.select("id", "name").where("ID","1").orWhere("ID","10").get();
 
-//            ResultSet rs=DbAccess.table("customer")
-//                    .select("ID","name")
-//                    .get();
-//
-
             ResultSet rs=DbAccess.table("customer")
-                    .select("ID","Name")
-                    .where("ID", "1")
+                    .select("ID","name")
                     .get();
-
 
             while (rs.next()) {
                 System.out.println(rs.getString(1).toString());
@@ -50,16 +41,25 @@ public class Test {
 
 
             Map<String,String> valuess=new HashMap<>();
-            valuess.put("ID", "10");
-            valuess.put("name", "10101010");
+            valuess.put("ID", "100");
+            valuess.put("name", "111");
+
+            valuess.put("ID", "101");
+            valuess.put("name", "1111");
+
+
 
             DbAccess.table("customer")
                     .values(valuess).insert();
 
-            DbAccess.table("customer")
-                    .set(valuess)
-                    .where("ID", "1")
-                    .update();
+
+
+
+//            DbAccess.table("customer")
+//                    .set(valuess)
+//                    .where("ID", "1")
+//                    .update();
+//
 
 
 
