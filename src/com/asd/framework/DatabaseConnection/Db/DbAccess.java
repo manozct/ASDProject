@@ -34,8 +34,8 @@ public class DbAccess {
 
         public ResultSet rawQuery(String query) {
             try {
-               // PreparedStatement preparedStatement = DbConnection.connectionObj.prepareStatement(query);
-                PreparedStatement preparedStatement = DbConnection.dbConnectionObj.connectionObj.prepareStatement(query);
+                PreparedStatement preparedStatement = DbConnection.connectionObj.prepareStatement(query);
+
                 return preparedStatement.executeQuery();
 
             } catch (SQLException e) {
@@ -49,7 +49,7 @@ public class DbAccess {
 
         public ResultSet get() {
             try {
-                PreparedStatement preparedStatement = DbConnection.dbConnectionObj.connectionObj.prepareStatement(selectionQuery);
+                PreparedStatement preparedStatement = DbConnection.connectionObj.prepareStatement(selectionQuery);
 
                 for (int i = 1; i <= parameters.size(); i++)
                     preparedStatement.setString(i, parameters.get(i - 1));
@@ -105,7 +105,7 @@ public class DbAccess {
             return execute(deletionQuery);
         }
         private int execute(String query) {
-            try (PreparedStatement preparedStatement = DbConnection.dbConnectionObj.connectionObj.prepareStatement(query)) {
+            try (PreparedStatement preparedStatement = DbConnection.connectionObj.prepareStatement(query)) {
                 for (int i = 1; i <= parameters.size(); i++)
                     preparedStatement.setString(i, parameters.get(i - 1));
                 parameters.clear();
