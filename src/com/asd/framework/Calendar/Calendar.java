@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import com.asd.framework.Appointment.Appointment;
+import com.asd.framework.Appointment.AppointmentMessage;
 import com.asd.framework.Appointment.AppointmentStatus;
 import com.asd.framework.Appointment.WaitingAppointment;
 import com.asd.framework.DatabaseConnection.Db.DbAccess;
@@ -126,10 +128,16 @@ public class Calendar {
 						LocalDateTime.ofEpochSecond(rs.getLong(5), 0, ZoneOffset.UTC),
 						LocalDateTime.ofEpochSecond(rs.getLong(6), 0, ZoneOffset.UTC));
 				a.changeStatus(status);
+				ResultSet rs1 = DbAccess.table("appointment_messages").select("authorId","text","date")
+						.where("appointmentId",Id.toString()).get();
+				LinkedList<AppointmentMessage> messages = new LinkedList<>();
+				while (rs1.next())
+					messages.add(new AppointmentMessage(rs1.getLong(1), rs1.getString(2), 
+							LocalDateTime.ofEpochSecond(rs.getLong(3), 0, ZoneOffset.UTC)));
+				a.setMessages(messages);
 				appointments.add(Id, a);
 			}
 		} catch (Exception e) {
-			System.out.println("Can not connect to database, please check your credentials!");
 		}
 	}
 	
@@ -145,7 +153,6 @@ public class Calendar {
 			DbAccess.table("appointments").values(values).insert();
 			return true;
 		} catch (Exception e) {
-			System.out.println("Can not connect to database, please check your credentials!");
 			return false;
 		}
 	};
@@ -157,7 +164,6 @@ public class Calendar {
 			DbAccess.table("appointments").set(values).where("recordId",appointment.getId().toString()).update();
 			return true;
 		} catch (Exception e) {
-			System.out.println("Can not connect to database, please check your credentials!");
 			return false;
 		}
 	};
@@ -174,7 +180,6 @@ public class Calendar {
 				waitinglist.add(Id,a);
 			}
 		} catch (Exception e) {
-			System.out.println("Can not connect to database, please check your credentials!");
 		}
 	}
 	
@@ -189,7 +194,6 @@ public class Calendar {
 			DbAccess.table("waitinglist").values(values).insert();
 			return true;
 		} catch (Exception e) {
-			System.out.println("Can not connect to database, please check your credentials!");
 			return false;
 		}
 	}
@@ -199,12 +203,11 @@ public class Calendar {
 			DbAccess.table("waitinglist").where("recordId",Id.toString()).delete();
 			return true;
 		} catch (Exception e) {
-			System.out.println("Can not connect to database, please check your credentials!");
 			return false;
 		}
 	}
 
-	public KeyList<Person> getStaffList() {
+	public KeyList<Person> getStaffListFromDB() {
 		KeyList<Person> staff_list = new KeyList<>();
 		try {
 			ResultSet rs = DbAccess.table("users").select("recordId","name","birthdate","lon","lat").where("staff","Y").get();
@@ -216,9 +219,24 @@ public class Calendar {
 				staff_list.add(Id, p);
 			}
 		} catch (Exception e) {
-			System.out.println("Can not connect to database!");
 		}
 		return staff_list;
+	}
+
+	public boolean saveStaffToDB(Person staff) {
+		try {
+            Map<String,String> values=new HashMap<>();
+            values.put("recordId", staff.getId().toString());
+            values.put("name", staff.getName());
+            values.put("birthdate", String.valueOf(staff.getBirthdate().toEpochDay()));
+            values.put("lon", staff.getLongitude().toString());
+            values.put("lat", staff.getLatitude().toString());
+            values.put("staff", "Y");
+			DbAccess.table("users").values(values).insert();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }
