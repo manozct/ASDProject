@@ -195,9 +195,10 @@ public class AddDoctor extends Application {
     }
     public void getConnection(){
         try {
-            DbConnection.getCOnnection();
-            Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
+            DbConnection.getCOnnection(DatabaseType.MySql, "localhost",
                     3306, "appointmentsystem", "root", "root");
+//            Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
+//                    3306, "appointmentsystem", "root", "root");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {

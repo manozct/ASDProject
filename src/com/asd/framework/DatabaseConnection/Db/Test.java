@@ -13,18 +13,10 @@ public class Test {
 
     public static void main(String[] args) {
 
-<<<<<<< HEAD
         /*try {
             DbConnection.getCOnnection();
             Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
                     3306, "mts", "root", "1234");
-=======
-        try {
-            DbConnection.getCOnnection(DatabaseType.MySql, "localhost",
-                  3306, "mts", "root", "1234");
-//            Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
-//                    3306, "mts", "root", "1234");
->>>>>>> ebcca62232b417c22b5eda4b141a97c9752c2fe5
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -48,16 +40,26 @@ public class Test {
 
 
             Map<String,String> valuess=new HashMap<>();
-            valuess.put("ID", "10");
-            valuess.put("name", "10101010");
+            valuess.put("ID", "100");
+            valuess.put("name", "111");
+
+            valuess.put("ID", "101");
+            valuess.put("name", "1111");
+
+
 
             DbAccess.table("customer")
                     .values(valuess).insert();
 
-            DbAccess.table("customer")
-                    .set(valuess)
-                    .where("ID", "1")
-                    .update();
+
+
+
+//            DbAccess.table("customer")
+//                    .set(valuess)
+//                    .where("ID", "1")
+//                    .update();
+//
+
 
 
         } catch (Exception e) {
