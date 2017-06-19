@@ -62,7 +62,7 @@ public class ValidationContext {
             for (ValidationConstraint constraint : validationConstraint) {
 
                 String value = InputRetriever.retrieveText(control);
-               // System.out.println("CheckValidate method:"+isValid);
+                // System.out.println("CheckValidate method:"+isValid);
 
 
                 if (!getValidator(constraint).validate(value)) {
@@ -72,10 +72,9 @@ public class ValidationContext {
 
 
                     String errMsg = InputRetriever.getControlId(control) + ":" + getErrorMsg(constraint);
-                    //list.add(String.format("%s is not valid !!! %s", value, validationConstraint));
-                    list.add(errMsg);
 
-                    isValid =false;
+                    list.add(errMsg);
+                    isValid = false;
 
                 }
                 // remove error class (red border)

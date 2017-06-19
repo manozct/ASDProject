@@ -4,6 +4,8 @@ import com.asd.framework.LoginAuthorization.SubjectInterface.LoginAuthorizationI
 
 
 import javafx.scene.control.Control;
+import javafx.scene.control.Menu;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +17,10 @@ import java.util.Map;
  */
 public class LoginAuthorizationExecutor implements LoginAuthorizationInterface {
     @Override
-    public void authorizationCheck(HashMap<String, List<Control>> hmapControl) {
+    public void authorizationCheck(HashMap<String, List<Menu>> hmapControl) {
         List<Control> lstControl=new ArrayList<>();
-        for(Map.Entry<String,List<Control>> hmp:hmapControl.entrySet()){
-            for(Control c:hmp.getValue()){
+        for(Map.Entry<String,List<Menu>> hmp:hmapControl.entrySet()){
+            for(Menu c:hmp.getValue()){
                 c.setVisible(true);
             }
         }

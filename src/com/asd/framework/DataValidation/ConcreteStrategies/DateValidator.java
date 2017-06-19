@@ -11,16 +11,20 @@ import java.text.SimpleDateFormat;
 public class DateValidator implements ValidatorStrategy {
     @Override
     public Boolean validate(String value) {
-        SimpleDateFormat dateFormat=new SimpleDateFormat("MM-dd-yyyy");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(value);
-            return true;
-        } catch (ParseException e) {
-            //e.printStackTrace();
-            return false;
+        if (value != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            dateFormat.setLenient(false);
+            try {
+                dateFormat.parse(value);
+                return true;
+            } catch (ParseException e) {
+                //e.printStackTrace();
+                return false;
+            }
         }
 
-       // return false;
+
+        // return false;
+        return false;
     }
 }
