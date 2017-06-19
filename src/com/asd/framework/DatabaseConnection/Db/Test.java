@@ -1,3 +1,4 @@
+/*
 package com.asd.framework.DatabaseConnection.Db;
 
 import java.sql.Connection;
@@ -6,15 +7,18 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+*/
 /**
  * Created by eessc on 6/14/2017.
- */
+ *//*
+
 public class Test {
 
     public static void main(String[] args) {
 
 <<<<<<< HEAD
-        /*try {
+        */
+/*try {
             DbConnection.getCOnnection();
             Connection conn = DbConnection.dbConnectionObj.connect(DatabaseType.MySql, "localhost",
                     3306, "mts", "root", "1234");
@@ -29,7 +33,8 @@ public class Test {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }*//*
+
         System.out.println("Connection Successful");
 
         try {
@@ -72,3 +77,4 @@ public class Test {
 
 }
 
+*/

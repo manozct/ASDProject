@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane onInputMethodTextChanged="#cmbRoleChanged" prefHeight="531.0" prefWidth="610.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UserController">
+   <children>
+      <Label layoutX="52.0" layoutY="61.0" text="Name" />
+      <TextField id="txtName" fx:id="txtName" layoutX="129.0" layoutY="56.0" />
+      <Label layoutX="52.0" layoutY="112.0" text="Address" />
+      <TextField id="txtAddress" fx:id="txtAddress" layoutX="129.0" layoutY="107.0" />
+      <Label layoutX="52.0" layoutY="161.0" text="DOB" />
+      <Label layoutX="52.0" layoutY="209.0" text="Contact" />
+      <TextField id="txtContact" fx:id="txtContact" layoutX="129.0" layoutY="204.0" />
+      <Label layoutX="57.0" layoutY="252.0" text="Role" />
+      <ComboBox id="cmbRole" fx:id="cmbRole" layoutX="129.0" layoutY="247.0" onAction="#cmbRoleChanged" prefHeight="31.0" prefWidth="187.0" promptText="Select Role" />
+      <Label layoutX="57.0" layoutY="346.0" text="Email" />
+      <TextField id="txtEmail" fx:id="txtEmail" layoutX="129.0" layoutY="341.0" />
+      <Label layoutX="54.0" layoutY="390.0" text="Password" />
+      <TextField id="txtPassword" fx:id="txtPassword" layoutX="129.0" layoutY="385.0" />
+      <Button id="btnCreateAccount" fx:id="btnCreateAccount" layoutX="129.0" layoutY="432.0" mnemonicParsing="false" onAction="#createAccountAction" text="Create Account" />
+      <Label layoutX="129.0" layoutY="21.0" prefHeight="27.0" prefWidth="151.0" text="User Registration">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCategory" layoutX="57.0" layoutY="298.0" text="Category" />
+      <ComboBox id="cmbCategory" fx:id="cmbCategory" layoutX="129.0" layoutY="293.0" prefHeight="31.0" prefWidth="187.0" promptText="Select Category" />
+      <DatePicker id="txtDOB" fx:id="txtDOB" layoutX="129.0" layoutY="156.0" prefHeight="31.0" prefWidth="187.0" />
+   </children>
+</AnchorPane>

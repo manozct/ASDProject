@@ -1,3 +1,5 @@
+/*
+
 package com.asd.framework.Appointment;
 
 import java.time.LocalDateTime;
@@ -32,3 +34,5 @@ public class WaitingAppointment {
 
 	}
 }
+
+*/
