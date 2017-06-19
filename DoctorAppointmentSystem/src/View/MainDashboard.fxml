@@ -10,9 +10,10 @@
    <top>
       <MenuBar id="MainMenu" fx:id="MainMenu" BorderPane.alignment="CENTER">
         <menus>
-          <Menu fx:id="appointmentId" mnemonicParsing="false" text="My Appointment">
+          <Menu fx:id="appointmentId" mnemonicParsing="false" text="Appointment">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem id="myDashBoard" fx:id="myDashBoard" mnemonicParsing="false" onAction="#viewDashBoard" text="My Dashboard" />
+                  <MenuItem id="itemMenuClose" fx:id="itemMenuClose" mnemonicParsing="false" text="CLose" />
             </items>
           </Menu>
           <Menu fx:id="customerListId" mnemonicParsing="false" text="View Customer">
