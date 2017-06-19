@@ -1,7 +1,12 @@
 package com.asd.framework.Appointment;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+
+import com.asd.framework.DatabaseConnection.Db.DbAccess;
 
 public class Appointment {
 	private Long Id;
@@ -30,8 +35,8 @@ public class Appointment {
 		this.end = end;
 	}
 
-	public void newMessage(AppointmentMessage message) {
-		this.messages.add(message);
+	public void setMessages(LinkedList<AppointmentMessage> messages) {
+		this.messages = messages;
 	}
 
 	public AppointmentStatus getStatus() {
@@ -62,7 +67,22 @@ public class Appointment {
 		return messages;
 	}
 	
-	public void addMessage(Long authorId, String text) {
+	public boolean addMessage(Long authorId, String text) {
+		try {
+			LocalDateTime date = LocalDateTime.now();
+			AppointmentMessage message = new AppointmentMessage(authorId, text, date);
+            Map<String,String> values=new HashMap<>();
+            values.put("appointmentId", this.getId().toString());
+            values.put("authorId", authorId.toString());
+            values.put("date", String.valueOf(date.toEpochSecond(ZoneOffset.UTC)));
+            values.put("text", text);
+			DbAccess.table("appointment_messages").values(values).insert();
+			messages.add(message);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
 		
 	}
 }

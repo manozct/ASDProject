@@ -14,12 +14,12 @@ import java.util.List;
 public class LoginAuthorizationProxy implements LoginAuthorizationInterface {
     private LoginAuthorizationInterface loginAuthorization;
 
-    public LoginAuthorizationProxy(String username,String password){
+    /*public LoginAuthorizationProxy(){
         if(username.equals("doctor")&&password.equals("doctor")){
             loginAuthorization=new LoginAuthorizationExecutor();
             System.out.println("login successs");
         }
-    }
+    }*/
 
 
     @Override
