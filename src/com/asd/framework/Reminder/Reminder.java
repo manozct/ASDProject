@@ -1,23 +1,23 @@
 package com.asd.framework.Reminder;
 
+import java.time.LocalDateTime;
+
 public class Reminder {
-
-	private ReminderDefaultStrategy r;
-
-	public Reminder() {
-		r = new ReminderDefaultStrategy();
+	String text;
+	LocalDateTime date;
+	ReminderStatus status;
+	public Reminder(String text, LocalDateTime date, ReminderStatus status) {
+		this.text = text;
+		this.date =  date;
+		this.status = status;
 	}
-	
-	public void setEmailDelivery(String smtp, String username, String password) {
-		r = new ReminderEmailStrategy(smtp, username, password);
+	public String getText() {
+		return text;
 	}
-	
-	public void setSMSDelivery(String smsgateway, String username, String password) {
-		r = new ReminderSMSStrategy(smsgateway, username, password);
+	public LocalDateTime getDate() {
+		return date;
 	}
-	
-	public boolean send(Integer receiverId, String text) {
-		return r.send(receiverId, text);
+	public ReminderStatus getStatus() {
+		return status;
 	}
-
 }

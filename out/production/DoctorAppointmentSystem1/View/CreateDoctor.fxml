@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CreateDoctor">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="725.0" prefWidth="739.0">
+         <children>
+            <Label layoutX="100.0" layoutY="32.0" text="Doctor Registration">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <Label layoutX="100.0" layoutY="126.0" text="Name">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorName" fx:id="txtDoctorName" layoutX="206.0" layoutY="122.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="92.0" layoutY="185.0" text="Address">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorAddress" fx:id="txtDoctorAddress" layoutX="206.0" layoutY="181.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="81.0" layoutY="246.0" prefHeight="35.0" prefWidth="115.0" text="Category">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorCategory" fx:id="txtDoctorCategory" layoutX="206.0" layoutY="244.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="91.0" layoutY="306.0" text="DOB">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorDob" fx:id="txtDoctorDob" layoutX="206.0" layoutY="304.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="91.0" layoutY="373.0" text="Email">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorEmail" fx:id="txtDoctorEmail" layoutX="206.0" layoutY="371.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="93.0" layoutY="433.0" text="Contact">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorContact" fx:id="txtDoctorContact" layoutX="206.0" layoutY="429.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Button id="btnCreateDoctor" fx:id="btnCreateDoctor" layoutX="206.0" layoutY="617.0" mnemonicParsing="false" onAction="#createDoctor" prefHeight="39.0" prefWidth="207.0" text="Create my account">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Label layoutX="85.0" layoutY="490.0" prefHeight="35.0" prefWidth="115.0" text="Username">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorUserName" fx:id="txtDoctorUserName" layoutX="206.0" layoutY="488.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="85.0" layoutY="547.0" prefHeight="35.0" prefWidth="115.0" text="Password">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField id="txtDoctorPassword" fx:id="txtDoctorPassword" layoutX="206.0" layoutY="547.0" prefHeight="39.0" prefWidth="287.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
+      <Label layoutX="103.0" layoutY="443.0" text="Contact">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="95.0" layoutY="500.0" prefHeight="35.0" prefWidth="115.0" text="Username">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

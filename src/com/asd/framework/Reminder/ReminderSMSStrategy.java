@@ -13,7 +13,7 @@ public class ReminderSMSStrategy extends ReminderDefaultStrategy {
 	}
 
 	@Override
-	public boolean send(Integer receiverId, String text) {
+	public boolean send(Long receiverId, String text) {
 		//Connect to SMS Gateway
 		return true;
 	}

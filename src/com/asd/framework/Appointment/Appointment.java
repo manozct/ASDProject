@@ -1,18 +1,23 @@
 package com.asd.framework.Appointment;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+
+import com.asd.framework.DatabaseConnection.Db.DbAccess;
 
 public class Appointment {
 	private Long Id;
 	private AppointmentStatus status;
-	private Integer appointerId;
-	private Integer appointeeId;
+	private Long appointerId;
+	private Long appointeeId;
 	private LocalDateTime start;
 	private LocalDateTime end;
 	private LinkedList<AppointmentMessage> messages;
 
-	public Appointment(Long Id, Integer appointerId, Integer appointeeId, LocalDateTime start, LocalDateTime end) {
+	public Appointment(Long Id, Long appointerId, Long appointeeId, LocalDateTime start, LocalDateTime end) {
 		this.appointerId = appointerId;
 		this.appointeeId = appointeeId;
 		this.start = start;
@@ -21,7 +26,7 @@ public class Appointment {
 		this.Id = Id;
 	}
 
-	public void changeState(AppointmentStatus status) {
+	public void changeStatus(AppointmentStatus status) {
 		this.status = status;
 	}
 
@@ -30,8 +35,8 @@ public class Appointment {
 		this.end = end;
 	}
 
-	public void newMessage(AppointmentMessage message) {
-		this.messages.add(message);
+	public void setMessages(LinkedList<AppointmentMessage> messages) {
+		this.messages = messages;
 	}
 
 	public AppointmentStatus getStatus() {
@@ -42,11 +47,11 @@ public class Appointment {
 		return Id;
 	}
 
-	public Integer getAppointerId() {
+	public Long getAppointerId() {
 		return appointerId;
 	}
 
-	public Integer getAppointeeId() {
+	public Long getAppointeeId() {
 		return appointeeId;
 	}
 
@@ -60,5 +65,24 @@ public class Appointment {
 
 	public LinkedList<AppointmentMessage> getMessages() {
 		return messages;
+	}
+	
+	public boolean addMessage(Long authorId, String text) {
+		try {
+			LocalDateTime date = LocalDateTime.now();
+			AppointmentMessage message = new AppointmentMessage(authorId, text, date);
+            Map<String,String> values=new HashMap<>();
+            values.put("appointmentId", this.getId().toString());
+            values.put("authorId", authorId.toString());
+            values.put("date", String.valueOf(date.toEpochSecond(ZoneOffset.UTC)));
+            values.put("text", text);
+			DbAccess.table("appointment_messages").values(values).insert();
+			messages.add(message);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+		
 	}
 }
